@@ -33,7 +33,7 @@ class MongoCacheDriver {
 
   set(key, value, lifetime) {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.set(key, value, lifetime);
       });
     }
@@ -53,7 +53,7 @@ class MongoCacheDriver {
 
   get(key) {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.get(key);
       });
     }
@@ -73,7 +73,7 @@ class MongoCacheDriver {
 
   del(key) {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.del(key);
       });
     }
@@ -86,7 +86,7 @@ class MongoCacheDriver {
 
   has(key) {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.has(key);
       });
     }
