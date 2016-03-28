@@ -11,7 +11,7 @@ const MongoClient = require('mongodb').MongoClient;
 class MongoCacheDriver {
   constructor(options) {
     let me = this;
-    this._maxAge = options.maxAge || 86400 * 365 * 10 * 1000;
+    this._maxAge = options.maxAge || 86400 * 365;
     this._connecting = MongoClient.connect(options.url, {
       uri_decode_auth: options.uri_decode_auth,
       db: options.db,
@@ -43,7 +43,7 @@ class MongoCacheDriver {
         return this.set(key, value, lifetime);
       });
     }
-    let expiredAt = new Date(Date.now() + (lifetime || this._maxAge));
+    let expiredAt = new Date(Date.now() + (lifetime || this._maxAge) * 1000);
 
     return this._driver.findOneAndReplace({
       _id: key

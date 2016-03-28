@@ -1,6 +1,6 @@
 {
   "name": "alaska-cache-mongo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Alaska MongoDB cache dirver",
   "main": "index.js",
   "scripts": {
