@@ -12,7 +12,13 @@ class MongoCacheDriver {
   constructor(options) {
     let me = this;
     this._maxAge = options.maxAge || 86400 * 365 * 10 * 1000;
-    this._connecting = MongoClient.connect(options.url, options.options);
+    this._connecting = MongoClient.connect(options.url, {
+      uri_decode_auth: options.uri_decode_auth,
+      db: options.db,
+      server: options.server,
+      replSet: options.replSet,
+      mongos: options.mongos
+    });
     this._connecting.then(function (db) {
       me._connecting = null;
       me._driver = db.collection(options.collection || 'mongo_cache');
