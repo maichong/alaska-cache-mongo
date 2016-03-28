@@ -11,8 +11,8 @@ cache: {
   url: 'mongodb://localhost/mydb',
   // The cache collection
   collection: 'caches',
-  // Maximum age in ms
-  maxAge: 1000 * 60 * 60,
+  // default maximum age in seconds
+  maxAge: 3600,
   //more http://mongodb.github.io/node-mongodb-native/2.1/api/MongoClient.html#.connect
   uri_decode_auth: false,
   db: null,
