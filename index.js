@@ -8,6 +8,8 @@
 
 const MongoClient = require('mongodb').MongoClient;
 
+const debug = require('debug')('alaska-cache-mongo');
+
 class MongoCacheDriver {
   constructor(options) {
     let me = this;
@@ -45,6 +47,7 @@ class MongoCacheDriver {
     }
     let expiredAt = new Date(Date.now() + (lifetime || this._maxAge) * 1000);
 
+    debug('set', key, value, lifetime);
     return this._driver.findOneAndReplace({
       _id: key
     }, {
@@ -67,17 +70,21 @@ class MongoCacheDriver {
       _id: key
     }).then(function (doc) {
       if (!doc) {
-        return Promise.resolve();
+        debug('get', key, null);
+        return Promise.resolve(null);
       }
       if (!doc.expiredAt || doc.expiredAt < new Date) {
         //已过期
+        debug('get', key, null);
         return this.del(key);
       }
+      debug('get', key, doc.value);
       return Promise.resolve(doc.value);
     });
   }
 
   del(key) {
+    debug('del', key);
     if (this._connecting) {
       return this._connecting.then(() => {
         return this.del(key);
@@ -100,12 +107,14 @@ class MongoCacheDriver {
       _id: key
     }).then(function (doc) {
       if (!doc) {
+        debug('has', key, false);
         return Promise.resolve(false);
       }
       if (!doc.expiredAt || doc.expiredAt < new Date) {
         //已过期
         return this.del(key);
       }
+      debug('has', key, true);
       return Promise.resolve(true);
     });
   }
@@ -116,6 +125,7 @@ class MongoCacheDriver {
         return this.size();
       });
     }
+    debug('size');
     return this._driver.count();
   }
 
@@ -125,6 +135,7 @@ class MongoCacheDriver {
         return this.flush();
       });
     }
+    debug('flush');
     return this._driver.drop();
   }
 }
