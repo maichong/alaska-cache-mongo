@@ -1,7 +1,11 @@
 {
   "name": "alaska-cache-mongo",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Alaska MongoDB cache dirver",
+  "keywords": [
+    "alaska",
+    "alaska-cache"
+  ],
   "main": "index.js",
   "scripts": {},
   "repository": {
@@ -22,7 +26,7 @@
     "alaska": "*"
   },
   "dependencies": {
-    "mongodb": "^2.0.0",
+    "mongodb": "^2.1.18",
     "debug": "^2.2.0"
   }
 }
