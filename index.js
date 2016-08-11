@@ -25,7 +25,7 @@ class MongoCacheDriver {
       this._driver.createIndex('expiredAt', {
         background: true
       });
-    }, function (error) {
+    }, (error) => {
       console.error(error.stack);
       process.exit(1);
     });
@@ -94,7 +94,7 @@ class MongoCacheDriver {
     }
     return this._driver.findOne({
       _id: key
-    }).then(function (doc) {
+    }).then((doc) => {
       if (!doc) {
         debug('get', key, '=>', null);
         return Promise.resolve(null);
@@ -123,8 +123,6 @@ class MongoCacheDriver {
     debug('del', key);
     return this._driver.deleteOne({
       _id: key
-    }).then(function () {
-      return Promise.resolve();
     });
   }
 
@@ -141,7 +139,7 @@ class MongoCacheDriver {
     }
     return this._driver.findOne({
       _id: key
-    }).then(function (doc) {
+    }).then((doc) => {
       if (!doc) {
         debug('has', key, '=>', false);
         return Promise.resolve(false);
@@ -173,7 +171,7 @@ class MongoCacheDriver {
     return this._driver.findOneAndUpdate({ _id: key }, { $inc: { value: 1 }, $set: { expiredAt } }, {
       new: true,
       upsert: true
-    }).then(function (doc) {
+    }).then((doc) => {
       let value = doc.value ? doc.value.value + 1 : 1;
       debug('inc', key, '=>', value);
       return Promise.resolve(value);
@@ -198,7 +196,7 @@ class MongoCacheDriver {
     return this._driver.findOneAndUpdate({ _id: key }, { $inc: { value: 1 }, $set: { expiredAt } }, {
       new: true,
       upsert: true
-    }).then(function (doc) {
+    }).then((doc) => {
       let value = doc.value ? doc.value.value - 1 : 1;
       debug('dec', key, '=>', value);
       return Promise.resolve(value);
@@ -211,7 +209,7 @@ class MongoCacheDriver {
    */
   size() {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.size();
       });
     }
@@ -224,7 +222,7 @@ class MongoCacheDriver {
    */
   prune() {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.prune();
       });
     }
@@ -237,7 +235,7 @@ class MongoCacheDriver {
    */
   flush() {
     if (this._connecting) {
-      return this._connecting.then(function () {
+      return this._connecting.then(() => {
         return this.flush();
       });
     }
